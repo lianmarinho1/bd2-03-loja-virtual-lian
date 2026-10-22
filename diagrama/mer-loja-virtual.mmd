@@ -1,0 +1,27 @@
+erDiagram
+    CATEGORIA ||--o{ PRODUTO : classifica
+    PRODUTO ||--o{ PRECO_PRODUTO : possui
+    PRODUTO ||--o{ MOVIMENTO_ESTOQUE : movimenta
+    CLIENTE ||--o{ ENDERECO : possui
+    CLIENTE ||--o{ PEDIDO : realiza
+    ENDERECO ||--o{ PEDIDO : usado_em
+    CUPOM o|--o{ PEDIDO : aplicado_em
+    PEDIDO ||--|{ ITEM_PEDIDO : contem
+    PRODUTO ||--o{ ITEM_PEDIDO : vendido_em
+    PEDIDO ||--o{ PAGAMENTO : recebe
+    FRETE_UF ||--o{ PEDIDO : calcula
+    CLIENTE ||--o{ AVALIACAO : escreve
+    PRODUTO ||--o{ AVALIACAO : recebe
+
+    CATEGORIA { int id_categoria PK string nome }
+    PRODUTO { int id_produto PK string sku UK int id_categoria FK string nome string descricao jsonb especificacoes boolean ativo }
+    PRECO_PRODUTO { int id_preco PK int id_produto FK decimal valor datetime inicio_vigencia datetime fim_vigencia }
+    MOVIMENTO_ESTOQUE { int id_movimento PK int id_produto FK string tipo int quantidade datetime ocorrido_em string observacao }
+    CLIENTE { int id_cliente PK string nome string email string documento }
+    ENDERECO { int id_endereco PK int id_cliente FK string tipo string logradouro string numero string cidade string uf string cep }
+    CUPOM { int id_cupom PK string codigo UK string tipo_desconto decimal valor_desconto decimal valor_minimo int limite_usos int usos_realizados datetime validade_inicio datetime validade_fim boolean ativo }
+    PEDIDO { int id_pedido PK string numero UK int id_cliente FK int id_endereco_entrega FK string uf_entrega FK int id_cupom FK string status datetime criado_em decimal subtotal decimal desconto decimal frete decimal total string entrega_logradouro string entrega_numero string entrega_complemento string entrega_cidade string entrega_uf string entrega_cep }
+    ITEM_PEDIDO { int id_pedido PK,FK int id_item PK int id_produto FK string nome_produto decimal preco_unitario int quantidade decimal total_item }
+    PAGAMENTO { int id_pagamento PK int id_pedido FK string forma string status decimal valor datetime pago_em }
+    FRETE_UF { string uf PK decimal valor }
+    AVALIACAO { int id_avaliacao PK int id_cliente FK int id_produto FK int nota string comentario datetime criado_em }
